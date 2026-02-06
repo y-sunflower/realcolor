@@ -1,12 +1,12 @@
 [project]
-name = "package_name"
+name = "realcolor"
 description = "Description"
 version = "0.1.0"
 license = "MIT"
 license-files = ["LICENSE"]
 keywords = ["a", "list", "of", "keywords"]
 authors = [
-  { name="your_name", email="your_name@mail.com" },
+  { name="Joseph Barbier", email="joseph@ysunflower.com" },
 ]
 readme = "README.md"
 requires-python = ">=3.9"
@@ -15,7 +15,10 @@ classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 3 - Alpha"
 ]
-dependencies = []
+dependencies = [
+    "colorspacious>=1.1.2",
+    "matplotlib>=3.9.4",
+]
 
 [build-system]
 requires = [
@@ -25,10 +28,10 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["package_name"]
+packages = ["realcolor"]
 
 [tool.uv.sources]
-package_name = { workspace = true }
+realcolor = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -40,15 +43,9 @@ dev = [
     "coverage>=7.9.1",
     "genbadge>=1.1.2",
 ]
-quarto = [
-    "jupyter>=1.1.1",
-    "nbclient>=0.10.2",
-    "nbformat>=5.10.4",
-    "pyyaml>=6.0.2",
-]
 
 [project.urls]
-Homepage = "https://your_name.github.io/package_name/"
-Issues = "https://github.com/your_name/package_name/issues"
-Documentation = "https://your_name.github.io/package_name/"
-Repository = "https://github.com/your_name/package_name"
+Homepage = "https://y-sunflower.github.io/realcolor/"
+Issues = "https://github.com/y-sunflower/realcolor/issues"
+Documentation = "https://y-sunflower.github.io/realcolor/"
+Repository = "https://github.com/y-sunflower/realcolor"

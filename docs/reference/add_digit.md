@@ -1,3 +1,3 @@
 # Add digit
 
-::: package_name.add_digit
+::: realcolor.add_digit

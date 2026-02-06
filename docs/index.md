@@ -12,7 +12,7 @@ A python package template that contains everything you need to:
 
 ```
 root/
-├── package_name/             - Main package directory
+├── realcolor/             - Main package directory
 │   ├── __init__.py
 │   └── main.py/
 ├── tests/                    - Unit tests
@@ -51,13 +51,13 @@ Go to the Github repo [here](https://github.com/y-sunflower/python-package-templ
 - Clone your repo
 
 ```bash
-git clone https://github.com/your_name/package_name.git
+git clone https://github.com/y-sunflower/realcolor.git
 ```
 
 ### Replace with your package info
 
-- Replace **all** `your_name` with your GitHub username or organization
-- Replace **all** `package_name` with your actual package
+- Replace **all** `y-sunflower` with your GitHub username or organization
+- Replace **all** `realcolor` with your actual package
 - Replace info in `pyproject.toml`
 - Change the `LICENSE` file to your actual license (optional)
 
@@ -116,12 +116,10 @@ overall style of site:
 New PyPI releases are made via 2 scripts:
 
 - `release.sh`
-
   - When you run `.scripts/release.sh 1.0.0` (to release the 1.0.0
     version, for instance), it will commit, tag that commit and push.
 
 - `.github/workflows/pypi.yaml`
-
   - When a git tag matching `v1.2.3` format is pushed, it will make a
     new PyPI release (in short).
 
@@ -148,7 +146,7 @@ This is optional (you can use a plain `README.md` and delete
 - you can include code (for example, dynamic content)
 
 ```python
-from package_name import add_digit
+from realcolor import add_digit
 
 # The output here is not hardcoded
 print(add_digit(2, 5))

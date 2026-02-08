@@ -90,4 +90,37 @@ score.deuteranopia
 
 <br>
 
+## Contributing
+
+- Fork the repository to your own GitHub account.
+
+- Clone your forked repository to your local machine (ensure you have [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)):
+
+```bash
+git clone https://github.com/YOUR_NAME/realcolor.git
+cd realcolor
+```
+
+- Create a new branch:
+
+```bash
+git checkout -b my-feature
+```
+
+- Set up your Python environment (ensure you have [uv installed](https://docs.astral.sh/uv/getting-started/installation/)):
+
+```bash
+uv sync --all-extras --dev
+uv run pre-commit install
+uv pip install -e .
+```
+
+- Test that everything works correctly by running:
+
+```bash
+uv run pytest
+```
+
+<br>
+
 [^1]: Deane B. Judd, "Facts of Color-Blindness\*," J. Opt. Soc. Am. 33, 294-307 (1943)

@@ -1,4 +1,8 @@
-from realcolor.main import simulate_colorblindness
+from realcolor.main import (
+    simulate_colorblindness,
+    colorblind_score,
+    ColorblindScoreResult,
+)
 
 __version__ = "0.1.0"
-__all__ = ["simulate_colorblindness"]
+__all__ = ["simulate_colorblindness", "colorblind_score", "ColorblindScoreResult"]

@@ -14,6 +14,7 @@ from realcolor.main import (
     _simulate,
     _desaturate,
     simulate_colorblindness,
+    colorblind_score,
     VALID_KINDS,
 )
 
@@ -312,3 +313,131 @@ class TestAsColorblindFigPlotnine:
         result = simulate_colorblindness(ggp, kind=kind)
         assert len(result.axes) == 1
         plt.close(result)
+
+
+class TestColorblindScore:
+    # --- Input validation ---
+    def test_fewer_than_2_colors_raises(self):
+        with pytest.raises(ValueError, match="At least 2 colors"):
+            colorblind_score(["red"])
+
+    def test_empty_list_raises(self):
+        with pytest.raises(ValueError, match="At least 2 colors"):
+            colorblind_score([])
+
+    def test_invalid_color_raises(self):
+        with pytest.raises(ValueError):
+            colorblind_score(["red", "not_a_color_xyz"])
+
+    # --- Return structure ---
+    def test_return_has_overall_attr(self):
+        result = colorblind_score(["red", "blue"])
+        assert hasattr(result, "overall")
+
+    def test_return_has_three_cvd_attrs(self):
+        result = colorblind_score(["red", "blue"])
+        assert hasattr(result, "deuteranopia")
+        assert hasattr(result, "protanopia")
+        assert hasattr(result, "tritanopia")
+
+    def test_per_type_entry_has_expected_keys(self):
+        result = colorblind_score(["red", "blue"])
+        for kind in ("deuteranopia", "protanopia", "tritanopia"):
+            info = getattr(result, kind)
+            assert "score" in info
+            assert "min_deltaE" in info
+            assert "worst_pair" in info
+
+    def test_desaturated_not_an_attr(self):
+        result = colorblind_score(["red", "blue"])
+        assert not hasattr(result, "desaturated")
+
+    # --- Score range ---
+    def test_overall_between_0_and_100(self):
+        result = colorblind_score(["red", "green", "blue"])
+        assert 0 <= result.overall <= 100
+
+    def test_per_type_scores_between_0_and_100(self):
+        result = colorblind_score(["red", "green", "blue"])
+        for kind in ("deuteranopia", "protanopia", "tritanopia"):
+            assert 0 <= getattr(result, kind)["score"] <= 100
+
+    # --- Known behaviors ---
+    def test_identical_colors_score_zero(self):
+        result = colorblind_score(["red", "red"])
+        assert result.overall == 0.0
+
+    def test_red_green_scores_low_for_deuteranopia(self):
+        result = colorblind_score(["red", "green"])
+        assert result.deuteranopia["score"] < 80
+
+    def test_red_green_scores_low_for_protanopia(self):
+        result = colorblind_score(["red", "green"])
+        assert result.protanopia["score"] < 50
+
+    def test_red_blue_scores_higher_than_red_green(self):
+        rg = colorblind_score(["red", "green"])
+        rb = colorblind_score(["red", "blue"])
+        assert rb.overall > rg.overall
+
+    # --- Severity parameter ---
+    def test_severity_0_gives_high_score(self):
+        result = colorblind_score(["red", "green"], severity=0)
+        assert result.overall > 80
+
+    def test_higher_severity_lower_or_equal_score(self):
+        low_sev = colorblind_score(["red", "green"], severity=30)
+        high_sev = colorblind_score(["red", "green"], severity=100)
+        assert low_sev.overall >= high_sev.overall
+
+    # --- Input formats ---
+    def test_hex_colors(self):
+        result = colorblind_score(["#ff0000", "#0000ff"])
+        assert 0 <= result.overall <= 100
+
+    def test_named_colors(self):
+        result = colorblind_score(["red", "blue"])
+        assert 0 <= result.overall <= 100
+
+    def test_rgb_tuples(self):
+        result = colorblind_score([(1.0, 0.0, 0.0), (0.0, 0.0, 1.0)])
+        assert 0 <= result.overall <= 100
+
+    def test_mixed_formats(self):
+        result = colorblind_score(["red", "#00ff00", (0.0, 0.0, 1.0)])
+        assert 0 <= result.overall <= 100
+
+    # --- worst_pair ---
+    def test_worst_pair_contains_input_colors(self):
+        colors = ["#ff0000", "#00ff00"]
+        result = colorblind_score(colors)
+        for kind in ("deuteranopia", "protanopia", "tritanopia"):
+            pair = getattr(result, kind)["worst_pair"]
+            assert len(pair) == 2
+            assert pair[0] in colors or pair[1] in colors
+
+    def test_worst_pair_two_colors_returns_those_colors(self):
+        colors = ["#ff0000", "#00ff00"]
+        result = colorblind_score(colors)
+        for kind in ("deuteranopia", "protanopia", "tritanopia"):
+            assert set(getattr(result, kind)["worst_pair"]) == set(colors)
+
+    # --- Multiple colors ---
+    def test_three_colors(self):
+        result = colorblind_score(["red", "green", "blue"])
+        assert hasattr(result, "overall")
+        assert 0 <= result.overall <= 100
+
+    def test_overall_is_min_of_per_type(self):
+        result = colorblind_score(["red", "green", "blue"])
+        scores = [
+            getattr(result, kind)["score"]
+            for kind in ("deuteranopia", "protanopia", "tritanopia")
+        ]
+        assert result.overall == min(scores)
+
+    def test_repr(self):
+        result = colorblind_score(["red", "blue"])
+        r = repr(result)
+        assert "ColorblindScoreResult" in r
+        assert "overall=" in r

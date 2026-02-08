@@ -74,6 +74,20 @@ simulate_colorblindness(fig, kind="protanopia", severity=50)
 
 ![](./img/5.png)
 
+- Score how colorblind-friendly a set of colors is (0 = indistinguishable, 100 = perfectly distinguishable):
+
+```python
+from realcolor import colorblind_score
+
+score = colorblind_score(["red", "green", "blue"])
+
+score.overall
+#> 52.1
+
+score.deuteranopia
+#> {"score": 66.7, "min_deltaE": 16.7, "worst_pair": ("#ff0000", "#008000")}
+```
+
 <br>
 
 [^1]: Deane B. Judd, "Facts of Color-Blindness\*," J. Opt. Soc. Am. 33, 294-307 (1943)

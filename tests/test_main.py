@@ -9,7 +9,12 @@ from plotnine import ggplot, geom_point, aes
 from plotnine.data import anscombe_quartet
 
 
-from realcolor.main import _fig_to_array, _simulate, _desaturate, as_colorblind_fig
+from realcolor.main import (
+    _fig_to_array,
+    _simulate,
+    _desaturate,
+    simulate_colorblindness,
+)
 
 
 def _make_plot_object_mpl():
@@ -147,21 +152,21 @@ class TestDesaturate:
 class TestAsColorblindFigMpl:
     def test_returns_figure(self):
         fig = _make_plot_object_mpl()
-        result = as_colorblind_fig(fig)
+        result = simulate_colorblindness(fig)
         assert isinstance(result, plt.Figure)
         plt.close(fig)
         plt.close(result)
 
     def test_has_4_axes(self):
         fig = _make_plot_object_mpl()
-        result = as_colorblind_fig(fig)
+        result = simulate_colorblindness(fig)
         assert len(result.axes) == 4
         plt.close(fig)
         plt.close(result)
 
     def test_axes_titles(self):
         fig = _make_plot_object_mpl()
-        result = as_colorblind_fig(fig)
+        result = simulate_colorblindness(fig)
         titles = [ax.get_title() for ax in result.axes]
         assert titles == ["Deuteranopia", "Protanopia", "Tritanopia", "Desaturated"]
         plt.close(fig)
@@ -169,7 +174,7 @@ class TestAsColorblindFigMpl:
 
     def test_axes_have_no_ticks(self):
         fig = _make_plot_object_mpl()
-        result = as_colorblind_fig(fig)
+        result = simulate_colorblindness(fig)
         for ax in result.axes:
             assert not ax.axison
         plt.close(fig)
@@ -178,7 +183,7 @@ class TestAsColorblindFigMpl:
     def test_custom_figsize(self):
         fig = _make_plot_object_mpl()
         w, h = 12, 10
-        result = as_colorblind_fig(fig, figsize=(w, h))
+        result = simulate_colorblindness(fig, figsize=(w, h))
         actual_w, actual_h = result.get_size_inches()
         assert actual_w == pytest.approx(w)
         assert actual_h == pytest.approx(h)
@@ -187,14 +192,14 @@ class TestAsColorblindFigMpl:
 
     def test_returns_new_figure(self):
         fig = _make_plot_object_mpl()
-        result = as_colorblind_fig(fig)
+        result = simulate_colorblindness(fig)
         assert result is not fig
         plt.close(fig)
         plt.close(result)
 
     def test_each_subplot_has_image(self):
         fig = _make_plot_object_mpl()
-        result = as_colorblind_fig(fig)
+        result = simulate_colorblindness(fig)
         for ax in result.axes:
             assert len(ax.images) == 1
         plt.close(fig)
@@ -204,26 +209,26 @@ class TestAsColorblindFigMpl:
 class TestAsColorblindFigPlotnine:
     def test_returns_figure(self):
         ggp = _make_plot_object_plotnine()
-        result = as_colorblind_fig(ggp)
+        result = simulate_colorblindness(ggp)
         assert isinstance(result, plt.Figure)
         plt.close(result)
 
     def test_has_4_axes(self):
         ggp = _make_plot_object_plotnine()
-        result = as_colorblind_fig(ggp)
+        result = simulate_colorblindness(ggp)
         assert len(result.axes) == 4
         plt.close(result)
 
     def test_axes_titles(self):
         ggp = _make_plot_object_plotnine()
-        result = as_colorblind_fig(ggp)
+        result = simulate_colorblindness(ggp)
         titles = [ax.get_title() for ax in result.axes]
         assert titles == ["Deuteranopia", "Protanopia", "Tritanopia", "Desaturated"]
         plt.close(result)
 
     def test_axes_have_no_ticks(self):
         ggp = _make_plot_object_plotnine()
-        result = as_colorblind_fig(ggp)
+        result = simulate_colorblindness(ggp)
         for ax in result.axes:
             assert not ax.axison
         plt.close(result)
@@ -231,7 +236,7 @@ class TestAsColorblindFigPlotnine:
     def test_custom_figsize(self):
         ggp = _make_plot_object_plotnine()
         w, h = 12, 10
-        result = as_colorblind_fig(ggp, figsize=(w, h))
+        result = simulate_colorblindness(ggp, figsize=(w, h))
         actual_w, actual_h = result.get_size_inches()
         assert actual_w == pytest.approx(w)
         assert actual_h == pytest.approx(h)
@@ -239,7 +244,7 @@ class TestAsColorblindFigPlotnine:
 
     def test_each_subplot_has_image(self):
         ggp = _make_plot_object_plotnine()
-        result = as_colorblind_fig(ggp)
+        result = simulate_colorblindness(ggp)
         for ax in result.axes:
             assert len(ax.images) == 1
         plt.close(result)

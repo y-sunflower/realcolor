@@ -1,4 +1,4 @@
-from realcolor.main import as_colorblind_fig
+from realcolor.main import simulate_colorblindness
 
 __version__ = "0.1.0"
-__all__ = ["as_colorblind_fig"]
+__all__ = ["simulate_colorblindness"]

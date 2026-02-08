@@ -9,6 +9,7 @@ from plotnine import ggplot, geom_point, aes
 from plotnine.data import anscombe_quartet
 
 
+import realcolor
 from realcolor.main import (
     _fig_to_array,
     _simulate,
@@ -17,6 +18,10 @@ from realcolor.main import (
     colorblind_score,
     VALID_KINDS,
 )
+
+
+def test_version():
+    realcolor.__version__ == "0.2.0"
 
 
 def _make_plot_object_mpl():

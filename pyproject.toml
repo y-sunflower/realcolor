@@ -4,7 +4,7 @@ description = "Description"
 version = "0.1.0"
 license = "MIT"
 license-files = ["LICENSE"]
-keywords = ["a", "list", "of", "keywords"]
+keywords = ["colors", "colorblind", "deuteranomaly", "protanomaly", "tritanomaly", "matplotlib", "seaborn", "plotnine"]
 authors = [
   { name="Joseph Barbier", email="joseph@ysunflower.com" },
 ]
@@ -16,7 +16,7 @@ classifiers = [
     "Development Status :: 3 - Alpha"
 ]
 dependencies = [
-    "matplotlib>=3.9.4",
+    "matplotlib",
 ]
 
 [build-system]
@@ -37,16 +37,12 @@ dev = [
     "pre-commit>=4.2.0",
     "pytest>=8.3.5",
     "ruff>=0.11.13",
-    "mkdocs-material>=9.6.9",
-    "mkdocstrings-python>=1.16.5",
-    "coverage>=7.9.1",
-    "genbadge>=1.1.2",
     "ty>=0.0.15",
     "plotnine>=0.13.6",
 ]
 
 [project.urls]
-Homepage = "https://y-sunflower.github.io/realcolor/"
+Homepage = "https://github.com/y-sunflower/realcolor/"
 Issues = "https://github.com/y-sunflower/realcolor/issues"
-Documentation = "https://y-sunflower.github.io/realcolor/"
+Documentation = "https://github.com/y-sunflower/realcolor/"
 Repository = "https://github.com/y-sunflower/realcolor"

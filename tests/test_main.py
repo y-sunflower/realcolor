@@ -79,15 +79,17 @@ class TestSimulate:
     @pytest.mark.parametrize(
         "cvd_type", ["deuteranomaly", "protanomaly", "tritanomaly"]
     )
-    def test_output_shape_matches_input(self, sample_image, cvd_type):
-        result = _simulate(sample_image, cvd_type)
+    @pytest.mark.parametrize("severity", [0, 50, 100])
+    def test_output_shape_matches_input(self, sample_image, cvd_type, severity):
+        result = _simulate(sample_image, cvd_type, severity)
         assert result.shape == sample_image.shape
 
     @pytest.mark.parametrize(
         "cvd_type", ["deuteranomaly", "protanomaly", "tritanomaly"]
     )
-    def test_output_clipped_to_01(self, sample_image, cvd_type):
-        result = _simulate(sample_image, cvd_type)
+    @pytest.mark.parametrize("severity", [0, 50, 100])
+    def test_output_clipped_to_01(self, sample_image, cvd_type, severity):
+        result = _simulate(sample_image, cvd_type, severity)
         assert result.min() >= 0.0
         assert result.max() <= 1.0
 
@@ -99,21 +101,21 @@ class TestSimulate:
         np.testing.assert_allclose(result, sample_image, atol=1e-5)
 
     def test_different_cvd_types_give_different_results(self, sample_image):
-        deut = _simulate(sample_image, "deuteranomaly")
-        prot = _simulate(sample_image, "protanomaly")
-        trit = _simulate(sample_image, "tritanomaly")
+        deut = _simulate(sample_image, "deuteranomaly", 100)
+        prot = _simulate(sample_image, "protanomaly", 100)
+        trit = _simulate(sample_image, "tritanomaly", 100)
         assert not np.allclose(deut, prot)
         assert not np.allclose(deut, trit)
         assert not np.allclose(prot, trit)
 
     def test_dtype_is_float(self, sample_image):
-        result = _simulate(sample_image, "deuteranomaly")
+        result = _simulate(sample_image, "deuteranomaly", 100)
         assert np.issubdtype(result.dtype, np.floating)
 
     def test_pure_gray_unchanged(self):
         gray = np.full((5, 5, 3), 0.5)
         for cvd_type in ["deuteranomaly", "protanomaly", "tritanomaly"]:
-            result = _simulate(gray, cvd_type)
+            result = _simulate(gray, cvd_type, 100)
             np.testing.assert_allclose(result, gray, atol=0.05)
 
 

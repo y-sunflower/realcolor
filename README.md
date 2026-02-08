@@ -54,6 +54,8 @@ simulate_colorblindness(ggp)
 > [!TIP]
 > Looking for support of other data visualization libraries? [Open an issue](https://github.com/y-sunflower/realcolor/issues).
 
+<br>
+
 ## Other features
 
 - Simulate just one kind of colorblindness (one of `"deuteranopia"`, `"protanopia"`, `"tritanopia"`, `"desaturated"`):
@@ -63,6 +65,14 @@ simulate_colorblindness(fig, kind="protanopia")
 ```
 
 ![](./img/4.png)
+
+- Control the severity of the simulation (between 0 to 100, default to 100):
+
+```python
+simulate_colorblindness(fig, kind="protanopia", severity=50)
+```
+
+![](./img/5.png)
 
 <br>
 

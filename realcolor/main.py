@@ -18,7 +18,7 @@ def _fig_to_array(fig: Figure) -> npt.NDArray[np.floating]:
     return img[:, :, :3] / 255.0
 
 
-def _simulate(img_array, cvd_type, severity=100):
+def _simulate(img_array, cvd_type, severity):
     cvd_space = {"name": "sRGB1+CVD", "cvd_type": cvd_type, "severity": severity}
     simulated = cspace_convert(img_array, cvd_space, "sRGB1")
 
@@ -36,6 +36,7 @@ def _desaturate(img_array):
 def simulate_colorblindness(
     plot_object,
     figsize: tuple[float, float] = (8, 8),
+    severity: int | float = 100,
     kind: str | None = None,
 ) -> Figure:
     if kind is not None and kind not in VALID_KINDS:
@@ -50,9 +51,9 @@ def simulate_colorblindness(
     img = _fig_to_array(fig)
 
     all_simulations = {
-        "deuteranopia": ("Deuteranopia", _simulate(img, "deuteranomaly")),
-        "protanopia": ("Protanopia", _simulate(img, "protanomaly")),
-        "tritanopia": ("Tritanopia", _simulate(img, "tritanomaly")),
+        "deuteranopia": ("Deuteranopia", _simulate(img, "deuteranomaly", severity)),
+        "protanopia": ("Protanopia", _simulate(img, "protanomaly", severity)),
+        "tritanopia": ("Tritanopia", _simulate(img, "tritanomaly", severity)),
         "desaturated": ("Desaturated", _desaturate(img)),
     }
 

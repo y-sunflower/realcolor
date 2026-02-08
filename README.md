@@ -10,7 +10,7 @@
 ## Installation
 
 ```bash
-pip install git+https://github.com/y-sunflower/realcolor.git
+pip install realcolor
 ```
 
 <br>

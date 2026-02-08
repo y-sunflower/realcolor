@@ -2,13 +2,7 @@ from matplotlib.figure import Figure
 import numpy as np
 import numpy.typing as npt
 import matplotlib.pyplot as plt
-
-from realcolor.colors import (
-    _LUMINANCE_WEIGHTS,
-    _machado_matrix,
-    _srgb_to_linear,
-    _linear_to_srgb,
-)
+from colorspacious import cspace_convert
 
 
 def _fig_to_array(fig: Figure) -> npt.NDArray[np.floating]:
@@ -21,23 +15,19 @@ def _fig_to_array(fig: Figure) -> npt.NDArray[np.floating]:
     return img[:, :, :3] / 255.0
 
 
-def _simulate(
-    img_array: npt.NDArray[np.floating],
-    cvd_type: str,
-    severity: int = 100,
-) -> npt.NDArray[np.floating]:
-    matrix = _machado_matrix(cvd_type, severity)
-    linear = _srgb_to_linear(img_array)
-    simulated = np.einsum("...j,ij->...i", linear, matrix)
-    return np.clip(_linear_to_srgb(simulated), 0, 1)
+def _simulate(img_array, cvd_type, severity=100):
+    cvd_space = {"name": "sRGB1+CVD", "cvd_type": cvd_type, "severity": severity}
+    simulated = cspace_convert(img_array, cvd_space, "sRGB1")
+
+    # Force all values to stay within the [0.0, 1.0] range
+    return np.clip(simulated, 0, 1)
 
 
-def _desaturate(img_array: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
+def _desaturate(img_array):
     """Simulates complete achromatopsia (greyscale)."""
-    linear = _srgb_to_linear(img_array)
-    luminance = np.dot(linear[..., :3], _LUMINANCE_WEIGHTS)
-    gray_linear = np.stack([luminance] * 3, axis=-1)
-    return np.clip(_linear_to_srgb(gray_linear), 0, 1)
+    jch = cspace_convert(img_array, "sRGB1", "JCh")
+    jch[..., 1] = 0  # Set Chroma to 0
+    return cspace_convert(jch, "JCh", "sRGB1")
 
 
 def simulate_colorblindness(

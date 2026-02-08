@@ -16,6 +16,7 @@ classifiers = [
     "Development Status :: 3 - Alpha"
 ]
 dependencies = [
+    "colorspacious>=1.1.2",
     "matplotlib",
 ]
 

@@ -15,7 +15,11 @@ def _fig_to_array(fig: Figure) -> npt.NDArray[np.floating]:
     return img[:, :, :3] / 255.0
 
 
-def _simulate(img_array: npt.NDArray[np.floating], cvd_type: str, severity: int = 100) -> npt.NDArray[np.floating]:
+def _simulate(
+    img_array: npt.NDArray[np.floating],
+    cvd_type: str,
+    severity: int = 100,
+) -> npt.NDArray[np.floating]:
     cvd_space = {"name": "sRGB1+CVD", "cvd_type": cvd_type, "severity": severity}
     _simulated = cspace_convert(img_array, cvd_space, "sRGB1")
 

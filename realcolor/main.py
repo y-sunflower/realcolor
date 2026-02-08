@@ -40,7 +40,7 @@ def _desaturate(img_array: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]
     return np.clip(_linear_to_srgb(gray_linear), 0, 1)
 
 
-def as_colorblind_fig(
+def simulate_colorblindness(
     plot_object,
     figsize: tuple[float, float] = (8, 8),
 ) -> Figure:

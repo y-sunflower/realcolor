@@ -1,6 +1,9 @@
-# realcolor: how colorblind-friendly your charts are?
+# realcolor: simulate colorblindness in Python charts
 
-`realcolor` is a lightweight Python package meant to easily see colorblind people will see your charts. It simulates all kind of colorblindness and shows you the results.
+`realcolor` is a lightweight Python package designed to show **how colorblind people see your graphs**. It simulates all types of colorblindness (deuteranopia, protanopia, tritanopia) by showing you your graphic as seen by a colorblind person. It works with _matplotlib and everything built on top of it_ (seaborn, plotnine, etc).
+
+> [!NOTE]
+> Colorblindness affects up to 1 in 12 males (8%) and 1 in 200 females (0.5%)[^1]
 
 <br>
 
@@ -14,6 +17,8 @@ pip install git+https://github.com/y-sunflower/realcolor.git
 
 ## Quick start
 
+### Matplotlib
+
 ```python
 import matplotlib.pyplot as plt
 
@@ -26,9 +31,35 @@ ax.legend()
 ![](./img/1.png)
 
 ```python
-from realcolor import as_colorblind_fig
+from realcolor import simulate_colorblindness
 
-as_colorblind_fig(fig)
+simulate_colorblindness(fig)
 ```
 
 ![](./img/2.png)
+
+### Plotnine
+
+```python
+from plotnine import ggplot, geom_point, aes
+from plotnine.data import anscombe_quartet
+
+ggp = ggplot(anscombe_quartet, aes(x="x", y="y", color="dataset")) + geom_point(size=10)
+```
+
+![](./img/3.png)
+
+```python
+from realcolor import simulate_colorblindness
+
+simulate_colorblindness(ggp)
+```
+
+![](./img/4.png)
+
+> [!TIP]
+> Looking for support of other data visualization libraries? [Open an issue](https://github.com/y-sunflower/realcolor/issues).
+
+<br>
+
+[^1]: Deane B. Judd, "Facts of Color-Blindness\*," J. Opt. Soc. Am. 33, 294-307 (1943)

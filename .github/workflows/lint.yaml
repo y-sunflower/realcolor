@@ -1,9 +1,9 @@
 name: Check code formatting
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    branches:
-      - main
 
 jobs:
   check-formatting:

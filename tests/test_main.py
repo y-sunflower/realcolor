@@ -5,10 +5,14 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pytest
 
+from plotnine import ggplot, geom_point, aes
+from plotnine.data import anscombe_quartet
+
+
 from realcolor.main import _fig_to_array, _simulate, _desaturate, as_colorblind_fig
 
 
-def _make_simple_fig():
+def _make_plot_object_mpl():
     """Helper: create a simple matplotlib figure with colored patches."""
     fig, ax = plt.subplots()
     ax.plot([0, 1, 2], [0, 1, 0], color="red")
@@ -16,28 +20,34 @@ def _make_simple_fig():
     return fig
 
 
+def _make_plot_object_plotnine():
+    """Helper: create a simple plotnine figure with colored patches."""
+    ggp = ggplot(anscombe_quartet, aes(x="x", y="y", color="dataset")) + geom_point()
+    return ggp
+
+
 class TestFigToArray:
     def test_returns_3d_array(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         arr = _fig_to_array(fig)
         assert arr.ndim == 3
         plt.close(fig)
 
     def test_has_3_channels(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         arr = _fig_to_array(fig)
         assert arr.shape[2] == 3
         plt.close(fig)
 
     def test_values_between_0_and_1(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         arr = _fig_to_array(fig)
         assert arr.min() >= 0.0
         assert arr.max() <= 1.0
         plt.close(fig)
 
     def test_dtype_is_float(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         arr = _fig_to_array(fig)
         assert np.issubdtype(arr.dtype, np.floating)
         plt.close(fig)
@@ -134,31 +144,31 @@ class TestDesaturate:
         assert np.allclose(result[:, :, 0], result[:, :, 2], atol=0.05)
 
 
-class TestAsColorblindFig:
+class TestAsColorblindFigMpl:
     def test_returns_figure(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         result = as_colorblind_fig(fig)
         assert isinstance(result, plt.Figure)
         plt.close(fig)
         plt.close(result)
 
     def test_has_4_axes(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         result = as_colorblind_fig(fig)
         assert len(result.axes) == 4
         plt.close(fig)
         plt.close(result)
 
     def test_axes_titles(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         result = as_colorblind_fig(fig)
         titles = [ax.get_title() for ax in result.axes]
-        assert titles == ["Deuteranopia", "Protanopia", "Tritanopia", "_Desaturated"]
+        assert titles == ["Deuteranopia", "Protanopia", "Tritanopia", "Desaturated"]
         plt.close(fig)
         plt.close(result)
 
     def test_axes_have_no_ticks(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         result = as_colorblind_fig(fig)
         for ax in result.axes:
             assert not ax.axison
@@ -166,7 +176,7 @@ class TestAsColorblindFig:
         plt.close(result)
 
     def test_custom_figsize(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         w, h = 12, 10
         result = as_colorblind_fig(fig, figsize=(w, h))
         actual_w, actual_h = result.get_size_inches()
@@ -176,16 +186,60 @@ class TestAsColorblindFig:
         plt.close(result)
 
     def test_returns_new_figure(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         result = as_colorblind_fig(fig)
         assert result is not fig
         plt.close(fig)
         plt.close(result)
 
     def test_each_subplot_has_image(self):
-        fig = _make_simple_fig()
+        fig = _make_plot_object_mpl()
         result = as_colorblind_fig(fig)
         for ax in result.axes:
             assert len(ax.images) == 1
         plt.close(fig)
+        plt.close(result)
+
+
+class TestAsColorblindFigPlotnine:
+    def test_returns_figure(self):
+        ggp = _make_plot_object_plotnine()
+        result = as_colorblind_fig(ggp)
+        assert isinstance(result, plt.Figure)
+        plt.close(result)
+
+    def test_has_4_axes(self):
+        ggp = _make_plot_object_plotnine()
+        result = as_colorblind_fig(ggp)
+        assert len(result.axes) == 4
+        plt.close(result)
+
+    def test_axes_titles(self):
+        ggp = _make_plot_object_plotnine()
+        result = as_colorblind_fig(ggp)
+        titles = [ax.get_title() for ax in result.axes]
+        assert titles == ["Deuteranopia", "Protanopia", "Tritanopia", "Desaturated"]
+        plt.close(result)
+
+    def test_axes_have_no_ticks(self):
+        ggp = _make_plot_object_plotnine()
+        result = as_colorblind_fig(ggp)
+        for ax in result.axes:
+            assert not ax.axison
+        plt.close(result)
+
+    def test_custom_figsize(self):
+        ggp = _make_plot_object_plotnine()
+        w, h = 12, 10
+        result = as_colorblind_fig(ggp, figsize=(w, h))
+        actual_w, actual_h = result.get_size_inches()
+        assert actual_w == pytest.approx(w)
+        assert actual_h == pytest.approx(h)
+        plt.close(result)
+
+    def test_each_subplot_has_image(self):
+        ggp = _make_plot_object_plotnine()
+        result = as_colorblind_fig(ggp)
+        for ax in result.axes:
+            assert len(ax.images) == 1
         plt.close(result)

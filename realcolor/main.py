@@ -1,10 +1,11 @@
 from matplotlib.figure import Figure
 import numpy as np
+import numpy.typing as npt
 import matplotlib.pyplot as plt
 from colorspacious import cspace_convert
 
 
-def _fig_to_array(fig):
+def _fig_to_array(fig: Figure) -> npt.NDArray[np.floating]:
     """Converts a matplotlib figure to a 3D numpy array (RGB)."""
     # Force a draw so the buffer is populated
     fig.canvas.draw()
@@ -14,7 +15,7 @@ def _fig_to_array(fig):
     return img[:, :, :3] / 255.0
 
 
-def _simulate(img_array, cvd_type, severity=100):
+def _simulate(img_array: npt.NDArray[np.floating], cvd_type: str, severity: int = 100) -> npt.NDArray[np.floating]:
     cvd_space = {"name": "sRGB1+CVD", "cvd_type": cvd_type, "severity": severity}
     _simulated = cspace_convert(img_array, cvd_space, "sRGB1")
 
@@ -22,14 +23,14 @@ def _simulate(img_array, cvd_type, severity=100):
     return np.clip(_simulated, 0, 1)
 
 
-def _desaturate(img_array):
+def _desaturate(img_array: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]:
     """_simulates complete achromatopsia (greyscale)."""
     jch = cspace_convert(img_array, "sRGB1", "JCh")
     jch[..., 1] = 0  # Set Chroma to 0
     return cspace_convert(jch, "JCh", "sRGB1")
 
 
-def as_colorblind_fig(fig, figsize=(8, 8)) -> Figure:
+def as_colorblind_fig(fig: Figure, figsize: tuple[float, float] = (8, 8)) -> Figure:
     img = _fig_to_array(fig)
 
     simulations = [

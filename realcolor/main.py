@@ -40,14 +40,21 @@ def _desaturate(img_array: npt.NDArray[np.floating]) -> npt.NDArray[np.floating]
     return np.clip(_linear_to_srgb(gray_linear), 0, 1)
 
 
-def as_colorblind_fig(fig: Figure, figsize: tuple[float, float] = (8, 8)) -> Figure:
+def as_colorblind_fig(
+    plot_object,
+    figsize: tuple[float, float] = (8, 8),
+) -> Figure:
+    if not isinstance(plot_object, Figure):
+        fig = plot_object.draw()
+    else:
+        fig = plot_object
     img = _fig_to_array(fig)
 
     simulations = [
         ("Deuteranopia", _simulate(img, "deuteranomaly")),
         ("Protanopia", _simulate(img, "protanomaly")),
         ("Tritanopia", _simulate(img, "tritanomaly")),
-        ("_desaturated", _desaturate(img)),
+        ("Desaturated", _desaturate(img)),
     ]
 
     new_fig, axes = plt.subplots(nrows=2, ncols=2, figsize=figsize)
@@ -55,7 +62,7 @@ def as_colorblind_fig(fig: Figure, figsize: tuple[float, float] = (8, 8)) -> Fig
 
     for ax, (title, sim_img) in zip(axes, simulations):
         ax.imshow(np.clip(sim_img, 0, 1))
-        ax.set_title(title.title())
+        ax.set_title(title)
         ax.axis("off")
 
     new_fig.tight_layout()

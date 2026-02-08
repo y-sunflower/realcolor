@@ -14,6 +14,7 @@ from realcolor.main import (
     _simulate,
     _desaturate,
     simulate_colorblindness,
+    VALID_KINDS,
 )
 
 
@@ -205,6 +206,53 @@ class TestAsColorblindFigMpl:
         plt.close(fig)
         plt.close(result)
 
+    @pytest.mark.parametrize("kind", VALID_KINDS)
+    def test_single_kind_returns_figure(self, kind):
+        fig = _make_plot_object_mpl()
+        result = simulate_colorblindness(fig, kind=kind)
+        assert isinstance(result, plt.Figure)
+        plt.close(fig)
+        plt.close(result)
+
+    @pytest.mark.parametrize("kind", VALID_KINDS)
+    def test_single_kind_has_1_axis(self, kind):
+        fig = _make_plot_object_mpl()
+        result = simulate_colorblindness(fig, kind=kind)
+        assert len(result.axes) == 1
+        plt.close(fig)
+        plt.close(result)
+
+    @pytest.mark.parametrize(
+        "kind,expected_title",
+        [
+            ("deuteranopia", "Deuteranopia"),
+            ("protanopia", "Protanopia"),
+            ("tritanopia", "Tritanopia"),
+            ("desaturated", "Desaturated"),
+        ],
+    )
+    def test_single_kind_title(self, kind, expected_title):
+        fig = _make_plot_object_mpl()
+        result = simulate_colorblindness(fig, kind=kind)
+        assert result.axes[0].get_title() == expected_title
+        plt.close(fig)
+        plt.close(result)
+
+    def test_invalid_kind_raises(self):
+        fig = _make_plot_object_mpl()
+        with pytest.raises(ValueError, match="Invalid kind"):
+            simulate_colorblindness(fig, kind="invalid")
+        plt.close(fig)
+
+    def test_kind_none_shows_all(self):
+        fig = _make_plot_object_mpl()
+        result = simulate_colorblindness(fig, kind=None)
+        assert len(result.axes) == 4
+        titles = [ax.get_title() for ax in result.axes]
+        assert titles == ["Deuteranopia", "Protanopia", "Tritanopia", "Desaturated"]
+        plt.close(fig)
+        plt.close(result)
+
 
 class TestAsColorblindFigPlotnine:
     def test_returns_figure(self):
@@ -247,4 +295,18 @@ class TestAsColorblindFigPlotnine:
         result = simulate_colorblindness(ggp)
         for ax in result.axes:
             assert len(ax.images) == 1
+        plt.close(result)
+
+    @pytest.mark.parametrize("kind", VALID_KINDS)
+    def test_single_kind_returns_figure(self, kind):
+        ggp = _make_plot_object_plotnine()
+        result = simulate_colorblindness(ggp, kind=kind)
+        assert isinstance(result, plt.Figure)
+        plt.close(result)
+
+    @pytest.mark.parametrize("kind", VALID_KINDS)
+    def test_single_kind_has_1_axis(self, kind):
+        ggp = _make_plot_object_plotnine()
+        result = simulate_colorblindness(ggp, kind=kind)
+        assert len(result.axes) == 1
         plt.close(result)

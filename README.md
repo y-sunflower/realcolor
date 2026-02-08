@@ -17,7 +17,7 @@ pip install realcolor
 
 ## Quick start
 
-### Matplotlib
+- Matplotlib
 
 ```python
 import matplotlib.pyplot as plt
@@ -38,27 +38,31 @@ simulate_colorblindness(fig)
 
 ![](./img/2.png)
 
-### Plotnine
+- Plotnine
 
 ```python
 from plotnine import ggplot, geom_point, aes
 from plotnine.data import anscombe_quartet
+from realcolor import simulate_colorblindness
 
 ggp = ggplot(anscombe_quartet, aes(x="x", y="y", color="dataset")) + geom_point(size=10)
+simulate_colorblindness(ggp)
 ```
 
 ![](./img/3.png)
 
-```python
-from realcolor import simulate_colorblindness
+> [!TIP]
+> Looking for support of other data visualization libraries? [Open an issue](https://github.com/y-sunflower/realcolor/issues).
 
-simulate_colorblindness(ggp)
+## Other features
+
+- Simulate just one kind of colorblindness (one of `"deuteranopia"`, `"protanopia"`, `"tritanopia"`, `"desaturated"`):
+
+```python
+simulate_colorblindness(fig, kind="protanopia")
 ```
 
 ![](./img/4.png)
-
-> [!TIP]
-> Looking for support of other data visualization libraries? [Open an issue](https://github.com/y-sunflower/realcolor/issues).
 
 <br>
 

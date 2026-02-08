@@ -9,7 +9,7 @@ def _fig_to_array(fig: Figure) -> npt.NDArray[np.floating]:
     """Converts a matplotlib figure to a 3D numpy array (RGB)."""
     # Force a draw so the buffer is populated
     fig.canvas.draw()
-    res = fig.canvas.buffer_rgba()
+    res = fig.canvas.buffer_rgba()  # ty: ignore[unresolved-attribute]
     img = np.asarray(res)
 
     return img[:, :, :3] / 255.0

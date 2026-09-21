@@ -1,9 +1,3 @@
-# This is taken from
-# https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/#the-whole-ci-cd-workflow
-# but with the following differences
-# - removed the TestPyPI part
-# - instead of `on: push`, we have `tags` in there too
-
 name: Publish Python 🐍 distribution 📦 to PyPI
 
 on:

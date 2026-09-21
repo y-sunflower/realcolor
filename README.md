@@ -1,6 +1,8 @@
 # realcolor: simulate colorblindness in Python charts
 
-`realcolor` is a lightweight Python package designed to show **how colorblind people see your graphs**. It simulates all types of colorblindness (deuteranopia, protanopia, tritanopia) by showing you your graphic as seen by a colorblind person. It supports Matplotlib-based plots and Plotly figures.
+`realcolor` is a lightweight Python package designed to show **how colorblind people see your graphs**. It simulates all types of colorblindness (deuteranopia, protanopia, tritanopia).
+
+It works with the following library: `matplotlib`, `seaborn`, `plotnine` and `plotly`.
 
 > [!NOTE]
 > Colorblindness affects up to 1 in 12 males (8%) and 1 in 200 females (0.5%)[^1]
@@ -10,16 +12,8 @@
 ## Installation
 
 ```bash
-pip install realcolor[matplotlib]
+pip install realcolor
 ```
-
-For Plotly support, install the Plotly backend instead:
-
-```bash
-pip install realcolor[plotly]
-```
-
-The Plotly backend uses Kaleido to rasterize the source figure. Current Kaleido versions may also require a compatible Chrome or Chromium installation.
 
 <br>
 
@@ -73,9 +67,6 @@ fig = px.scatter(
 simulated = simulate_colorblindness(fig, width=800, height=800)
 simulated.show()
 ```
-
-> [!TIP]
-> Looking for support of other data visualization libraries? [Open an issue](https://github.com/y-sunflower/realcolor/issues).
 
 <br>
 
@@ -146,6 +137,7 @@ uv pip install -e .
 uv run pytest
 ```
 
+<br>
 <br>
 
 [^1]: Deane B. Judd, "Facts of Color-Blindness\*," J. Opt. Soc. Am. 33, 294-307 (1943)

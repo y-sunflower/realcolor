@@ -1,12 +1,11 @@
 import itertools
 
-from matplotlib.colors import to_rgb
-from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-import matplotlib.pyplot as plt
 from colorspacious import cspace_convert, deltaE
-
+from matplotlib.colors import to_rgb
+from matplotlib.figure import Figure
 
 VALID_KINDS = ("deuteranopia", "protanopia", "tritanopia", "desaturated")
 
@@ -49,7 +48,7 @@ def _desaturate(img_array):
 def simulate_colorblindness(
     plot_object,
     figsize: tuple[float, float] = (8, 8),
-    severity: int | float = 100,
+    severity: float = 100,
     kind: str | None = None,
 ) -> Figure:
     if kind is not None and kind not in VALID_KINDS:
@@ -149,7 +148,7 @@ class ColorblindScoreResult:
 
 def colorblind_score(
     colors: list[str | tuple[float, float, float]],
-    severity: int | float = 100,
+    severity: float = 100,
 ) -> ColorblindScoreResult:
     """Score how distinguishable a set of colors is under colorblind simulation.
 
@@ -172,9 +171,7 @@ def colorblind_score(
 
     # Normalise every input color to its hex representation for worst_pair output
     hex_colors = [
-        "#{:02x}{:02x}{:02x}".format(
-            int(round(r * 255)), int(round(g * 255)), int(round(b * 255))
-        )
+        f"#{round(r * 255):02x}{round(g * 255):02x}{round(b * 255):02x}"
         for r, g, b in color_array[:, 0, :]
     ]
 

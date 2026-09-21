@@ -48,5 +48,11 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 packages = ["realcolor"]
 
+[tool.pytest.ini_options]
+filterwarnings = [
+  "ignore:.*invalid escape sequence.*:DeprecationWarning:colorspacious\\.comparison",
+  "ignore:.*invalid escape sequence.*:SyntaxWarning:colorspacious\\.comparison",
+]
+
 [tool.uv.sources]
 realcolor = { workspace = true }

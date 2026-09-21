@@ -23,17 +23,12 @@ pip install realcolor
 
 ```python
 import matplotlib.pyplot as plt
+from realcolor import simulate_colorblindness
 
 fig, ax = plt.subplots()
 ax.plot([1, 2, 3], [4, 2, 5], label="Group A", lw=4)
 ax.plot([1, 2, 3], [2, 5, 3], label="Group B", lw=4)
 ax.legend()
-```
-
-![](./img/1.png)
-
-```python
-from realcolor import simulate_colorblindness
 
 simulate_colorblindness(fig)
 ```
@@ -47,8 +42,9 @@ from plotnine import ggplot, geom_point, aes
 from plotnine.data import anscombe_quartet
 from realcolor import simulate_colorblindness
 
-ggp = ggplot(anscombe_quartet, aes(x="x", y="y", color="dataset")) + geom_point(size=10)
-simulate_colorblindness(ggp)
+gg = ggplot(anscombe_quartet, aes(x="x", y="y", color="dataset")) + geom_point(size=10)
+
+simulate_colorblindness(gg)
 ```
 
 ![](./img/3.png)
@@ -64,9 +60,11 @@ fig = px.scatter(
     y=[4, 2, 5, 3],
     color=["Group A", "Group A", "Group B", "Group B"],
 )
-simulated = simulate_colorblindness(fig, width=800, height=800)
-simulated.show()
+
+simulate_colorblindness(fig)
 ```
+
+![](./img/plotly.png)
 
 <br>
 

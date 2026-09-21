@@ -92,7 +92,7 @@ def _parse_color(color) -> tuple[float, float, float]:
     raise ValueError(f"Invalid color value: {color!r}")
 
 
-def _fig_to_array(fig) -> npt.NDArray[np.floating]:
+def _fig_to_array(fig) -> npt.NDArray[np.float64]:
     """Convert a Matplotlib figure to RGB without importing Matplotlib eagerly."""
     from realcolor.matplotlib import fig_to_array
 

@@ -6,11 +6,15 @@ import numpy.typing as npt
 from realcolor.main import _all_simulations
 
 
-def fig_to_array(fig) -> npt.NDArray[np.floating]:
+def fig_to_array(fig) -> npt.NDArray[np.float64]:
     """Convert a Matplotlib figure to a 3D RGB array."""
+    if not hasattr(fig.canvas, "buffer_rgba"):
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+
+        FigureCanvasAgg(fig)
     fig.canvas.draw()
     res = fig.canvas.buffer_rgba()
-    img = np.asarray(res)
+    img = np.asarray(res, dtype=np.float64)
     return img[:, :, :3] / 255.0
 
 

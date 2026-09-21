@@ -2,10 +2,8 @@ from io import BytesIO
 from unittest.mock import patch
 
 import numpy as np
-import pytest
-
-plotly = pytest.importorskip("plotly")
 import plotly.graph_objects as go
+import pytest
 from PIL import Image
 
 from realcolor import simulate_colorblindness

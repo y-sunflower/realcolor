@@ -73,8 +73,8 @@ class TestFigToArray:
     def test_values_between_0_and_1(self):
         fig = _make_plot_object_mpl()
         arr = _fig_to_array(fig)
-        assert arr.min() >= 0.0
-        assert arr.max() <= 1.0
+        assert np.all(arr >= 0.0)
+        assert np.all(arr <= 1.0)
         plt.close(fig)
 
     def test_dtype_is_float(self):

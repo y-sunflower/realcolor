@@ -1,3 +1,6 @@
+import subprocess
+import sys
+
 import numpy as np
 import matplotlib
 
@@ -22,6 +25,22 @@ from realcolor.main import (
 
 def test_version():
     realcolor.__version__ == "0.2.0"
+
+
+def test_import_does_not_load_plotting_backends():
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; import realcolor; "
+            "assert 'matplotlib' not in sys.modules; "
+            "assert 'plotly' not in sys.modules",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
 
 
 def _make_plot_object_mpl():

@@ -9,12 +9,15 @@ license-files = ["LICENSE"]
 authors = [
   { name = "Joseph Barbier", email = "joseph@ysunflower.com" },
 ]
-keywords = ["colorblind", "colors", "deuteranomaly", "matplotlib", "plotnine", "protanomaly", "seaborn", "tritanomaly"]
+keywords = ["colorblind", "colors", "deuteranomaly", "matplotlib", "plotly", "plotnine", "protanomaly", "seaborn", "tritanomaly"]
 classifiers = ["Development Status :: 4 - Beta", "Operating System :: OS Independent", "Programming Language :: Python :: 3"]
 dependencies = [
   "colorspacious>=1.1.2",
-  "matplotlib",
 ]
+
+[project.optional-dependencies]
+matplotlib = ["matplotlib"]
+plotly = ["plotly", "kaleido", "pillow"]
 
 [project.urls]
 Documentation = "https://github.com/y-sunflower/realcolor/"
@@ -24,6 +27,9 @@ Repository = "https://github.com/y-sunflower/realcolor"
 
 [dependency-groups]
 dev = [
+  "kaleido",
+  "pillow",
+  "plotly",
   "plotnine[extra]",
   "pre-commit>=4.2.0",
   "pytest>=8.3.5",

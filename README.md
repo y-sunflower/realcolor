@@ -107,10 +107,10 @@ from realcolor import colorblind_score
 score = colorblind_score(["red", "green", "blue"])
 
 score.overall
-#> 52.1
+# > 52.1
 
 score.deuteranopia
-#> {"score": 66.7, "min_deltaE": 16.7, "worst_pair": ("#ff0000", "#008000")}
+# > {"score": 66.7, "min_deltaE": 16.7, "worst_pair": ("#ff0000", "#008000")}
 ```
 
 <br>

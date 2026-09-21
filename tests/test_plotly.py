@@ -1,5 +1,3 @@
-# ruff: noqa: E402
-
 from io import BytesIO
 from unittest.mock import patch
 

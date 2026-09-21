@@ -31,7 +31,7 @@ def simulate_matplotlib(
     plot_object,
     *,
     figsize: tuple[float, float],
-    severity: int | float,
+    severity: float,
     kind: str | None,
 ):
     """Render simulations as a Matplotlib figure."""

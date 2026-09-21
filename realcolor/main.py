@@ -1,11 +1,11 @@
 import itertools
 import math
 import numbers
+from collections.abc import Sequence
 
 import numpy as np
 import numpy.typing as npt
 from colorspacious import cspace_convert, deltaE
-
 
 VALID_KINDS = ("deuteranopia", "protanopia", "tritanopia", "desaturated")
 
@@ -136,7 +136,7 @@ def _validate_kind(kind: str | None) -> None:
         )
 
 
-def _all_simulations(img, severity: int | float) -> dict[str, tuple[str, npt.NDArray]]:
+def _all_simulations(img, severity: float) -> dict[str, tuple[str, npt.NDArray]]:
     return {
         "deuteranopia": ("Deuteranopia", _simulate(img, "deuteranomaly", severity)),
         "protanopia": ("Protanopia", _simulate(img, "protanomaly", severity)),
@@ -157,9 +157,9 @@ def simulate_colorblindness(
     plot_object,
     *,
     figsize: tuple[float, float] | None = None,
-    width: int | float | None = None,
-    height: int | float | None = None,
-    severity: int | float = 100,
+    width: float | None = None,
+    height: float | None = None,
+    severity: float = 100,
     kind: str | None = None,
 ):
     """Create a colorblindness simulation for a supported plotting figure.
@@ -252,8 +252,8 @@ class ColorblindScoreResult:
 
 
 def colorblind_score(
-    colors: list[str | tuple[float, float, float]],
-    severity: int | float = 100,
+    colors: Sequence[str | tuple[float, float, float]],
+    severity: float = 100,
 ) -> ColorblindScoreResult:
     """Score how distinguishable a set of colors is under colorblind simulation."""
     if len(colors) < 2:

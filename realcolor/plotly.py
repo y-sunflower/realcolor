@@ -20,7 +20,7 @@ def simulate_plotly(
     *,
     width: float,
     height: float,
-    severity: int | float,
+    severity: float,
     kind: str | None,
 ):
     """Render simulations as a Plotly figure."""

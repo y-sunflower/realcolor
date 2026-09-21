@@ -1,30 +1,28 @@
 import subprocess
 import sys
 
-import numpy as np
 import matplotlib
+import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pytest
-
-from plotnine import ggplot, geom_point, aes
+from plotnine import aes, geom_point, ggplot
 from plotnine.data import anscombe_quartet
-
 
 import realcolor
 from realcolor.main import (
+    VALID_KINDS,
+    _desaturate,
     _fig_to_array,
     _simulate,
-    _desaturate,
-    simulate_colorblindness,
     colorblind_score,
-    VALID_KINDS,
+    simulate_colorblindness,
 )
 
 
 def test_version():
-    realcolor.__version__ == "0.2.0"
+    assert realcolor.__version__ == "0.2.0"
 
 
 def test_import_does_not_load_plotting_backends():
@@ -32,9 +30,11 @@ def test_import_does_not_load_plotting_backends():
         [
             sys.executable,
             "-c",
-            "import sys; import realcolor; "
-            "assert 'matplotlib' not in sys.modules; "
-            "assert 'plotly' not in sys.modules",
+            (
+                "import sys; import realcolor; "
+                "assert 'matplotlib' not in sys.modules; "
+                "assert 'plotly' not in sys.modules"
+            ),
         ],
         check=True,
         capture_output=True,

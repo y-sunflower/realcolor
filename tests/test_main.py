@@ -22,7 +22,7 @@ from realcolor.main import (
 
 
 def test_version():
-    assert realcolor.__version__ == "0.2.0"
+    assert realcolor.__version__ == "0.3.0"
 
 
 def test_import_does_not_load_plotting_backends():

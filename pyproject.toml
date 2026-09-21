@@ -1,6 +1,6 @@
 [project]
 name = "realcolor"
-version = "0.2.0"
+version = "0.3.0"
 description = "Simulate colorblindness in Python charts"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -15,15 +15,15 @@ dependencies = [
   "colorspacious>=1.1.2",
 ]
 
-[project.optional-dependencies]
-matplotlib = ["matplotlib"]
-plotly = ["plotly", "kaleido", "pillow"]
-
 [project.urls]
 Documentation = "https://github.com/y-sunflower/realcolor/"
 Homepage = "https://github.com/y-sunflower/realcolor/"
 Issues = "https://github.com/y-sunflower/realcolor/issues"
 Repository = "https://github.com/y-sunflower/realcolor"
+
+[project.optional-dependencies]
+matplotlib = ["matplotlib"]
+plotly = ["plotly", "kaleido", "pillow"]
 
 [dependency-groups]
 dev = [
@@ -45,14 +45,14 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["realcolor"]
-
 [tool.pytest.ini_options]
 filterwarnings = [
   "ignore:.*invalid escape sequence.*:DeprecationWarning:colorspacious\\.comparison",
   "ignore:.*invalid escape sequence.*:SyntaxWarning:colorspacious\\.comparison",
 ]
+
+[tool.setuptools]
+packages = ["realcolor"]
 
 [tool.uv.sources]
 realcolor = { workspace = true }

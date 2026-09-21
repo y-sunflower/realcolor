@@ -1,49 +1,58 @@
 [project]
 name = "realcolor"
-description = "Simulate colorblindness in Python charts"
 version = "0.2.0"
-license = "MIT"
-license-files = ["LICENSE"]
-keywords = ["colors", "colorblind", "deuteranomaly", "protanomaly", "tritanomaly", "matplotlib", "seaborn", "plotnine"]
-authors = [
-  { name="Joseph Barbier", email="joseph@ysunflower.com" },
-]
+description = "Simulate colorblindness in Python charts"
 readme = "README.md"
 requires-python = ">=3.10"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-    "Development Status :: 4 - Beta"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Joseph Barbier", email = "joseph@ysunflower.com" },
 ]
+keywords = ["colorblind", "colors", "deuteranomaly", "matplotlib", "plotly", "plotnine", "protanomaly", "seaborn", "tritanomaly"]
+classifiers = ["Development Status :: 4 - Beta", "Operating System :: OS Independent", "Programming Language :: Python :: 3"]
 dependencies = [
-    "colorspacious>=1.1.2",
-    "matplotlib",
+  "colorspacious>=1.1.2",
+]
+
+[project.optional-dependencies]
+matplotlib = ["matplotlib"]
+plotly = ["plotly", "kaleido", "pillow"]
+
+[project.urls]
+Documentation = "https://github.com/y-sunflower/realcolor/"
+Homepage = "https://github.com/y-sunflower/realcolor/"
+Issues = "https://github.com/y-sunflower/realcolor/issues"
+Repository = "https://github.com/y-sunflower/realcolor"
+
+[dependency-groups]
+dev = [
+  "kaleido",
+  "pillow",
+  "plotly",
+  "plotnine[extra]",
+  "pre-commit>=4.2.0",
+  "pyrefly>=1.3.1",
+  "pytest>=8.3.5",
+  "ruff>=0.11.13",
+  "ty>=0.0.15",
 ]
 
 [build-system]
 requires = [
-    "setuptools",
-    "setuptools-scm",
+  "setuptools",
+  "setuptools-scm",
 ]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["realcolor"]
 
-[tool.uv.sources]
-realcolor = { workspace = true }
-
-[dependency-groups]
-dev = [
-    "pre-commit>=4.2.0",
-    "pytest>=8.3.5",
-    "ruff>=0.11.13",
-    "ty>=0.0.15",
-    "plotnine[extra]",
+[tool.pytest.ini_options]
+filterwarnings = [
+  "ignore:.*invalid escape sequence.*:DeprecationWarning:colorspacious\\.comparison",
+  "ignore:.*invalid escape sequence.*:SyntaxWarning:colorspacious\\.comparison",
 ]
 
-[project.urls]
-Homepage = "https://github.com/y-sunflower/realcolor/"
-Issues = "https://github.com/y-sunflower/realcolor/issues"
-Documentation = "https://github.com/y-sunflower/realcolor/"
-Repository = "https://github.com/y-sunflower/realcolor"
+[tool.uv.sources]
+realcolor = { workspace = true }

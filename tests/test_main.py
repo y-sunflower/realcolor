@@ -1,27 +1,46 @@
-import numpy as np
+import subprocess
+import sys
+
 import matplotlib
+import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pytest
-
-from plotnine import ggplot, geom_point, aes
+from plotnine import aes, geom_point, ggplot
 from plotnine.data import anscombe_quartet
-
 
 import realcolor
 from realcolor.main import (
+    VALID_KINDS,
+    _desaturate,
     _fig_to_array,
     _simulate,
-    _desaturate,
-    simulate_colorblindness,
     colorblind_score,
-    VALID_KINDS,
+    simulate_colorblindness,
 )
 
 
 def test_version():
-    realcolor.__version__ == "0.2.0"
+    assert realcolor.__version__ == "0.2.0"
+
+
+def test_import_does_not_load_plotting_backends():
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; import realcolor; "
+                "assert 'matplotlib' not in sys.modules; "
+                "assert 'plotly' not in sys.modules"
+            ),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
 
 
 def _make_plot_object_mpl():
@@ -54,8 +73,8 @@ class TestFigToArray:
     def test_values_between_0_and_1(self):
         fig = _make_plot_object_mpl()
         arr = _fig_to_array(fig)
-        assert arr.min() >= 0.0
-        assert arr.max() <= 1.0
+        assert np.all(arr >= 0.0)
+        assert np.all(arr <= 1.0)
         plt.close(fig)
 
     def test_dtype_is_float(self):

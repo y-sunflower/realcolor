@@ -84,8 +84,6 @@ simulate_colorblindness(fig, kind="protanopia")
 simulate_colorblindness(fig, kind="protanopia", severity=50)
 ```
 
-Matplotlib-based plots use `figsize=(width, height)` in inches. Plotly figures use their native `width` and `height` arguments in pixels.
-
 ![Two-group line chart simulated for protanopia at reduced severity](./img/5.png)
 
 - Score how colorblind-friendly a set of colors is (0 = indistinguishable, 100 = perfectly distinguishable):

@@ -33,7 +33,7 @@ ax.legend()
 simulate_colorblindness(fig)
 ```
 
-![](./img/2.png)
+![Matplotlib line charts simulated for deuteranopia, protanopia, tritanopia, and desaturation](./img/2.png)
 
 - Plotnine
 
@@ -47,7 +47,7 @@ gg = ggplot(anscombe_quartet, aes(x="x", y="y", color="dataset")) + geom_point(s
 simulate_colorblindness(gg)
 ```
 
-![](./img/3.png)
+![Plotnine scatter plots simulated for deuteranopia, protanopia, tritanopia, and desaturation](./img/3.png)
 
 - Plotly
 
@@ -64,7 +64,7 @@ fig = px.scatter(
 simulate_colorblindness(fig)
 ```
 
-![](./img/plotly.png)
+![Plotly scatter plots simulated for deuteranopia, protanopia, tritanopia, and desaturation](./img/plotly.png)
 
 <br>
 
@@ -76,7 +76,7 @@ simulate_colorblindness(fig)
 simulate_colorblindness(fig, kind="protanopia")
 ```
 
-![](./img/4.png)
+![Two-group line chart simulated for protanopia](./img/4.png)
 
 - Control the severity of the simulation (between 0 to 100, default to 100):
 
@@ -86,7 +86,7 @@ simulate_colorblindness(fig, kind="protanopia", severity=50)
 
 Matplotlib-based plots use `figsize=(width, height)` in inches. Plotly figures use their native `width` and `height` arguments in pixels.
 
-![](./img/5.png)
+![Two-group line chart simulated for protanopia at reduced severity](./img/5.png)
 
 - Score how colorblind-friendly a set of colors is (0 = indistinguishable, 100 = perfectly distinguishable):
 

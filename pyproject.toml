@@ -1,6 +1,6 @@
 [project]
 name = "realcolor"
-version = "0.3.0"
+version = "0.4.0"
 description = "Simulate colorblindness in Python charts"
 readme = "README.md"
 requires-python = ">=3.10"

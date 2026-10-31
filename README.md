@@ -2,7 +2,7 @@
 
 `realcolor` is a lightweight Python package designed to show **how colorblind people see your graphs**. It simulates all types of colorblindness (deuteranopia, protanopia, tritanopia).
 
-It works with the following library: `matplotlib`, `seaborn`, `plotnine` and `plotly`.
+It works with the following library: `matplotlib`, `seaborn`, `plotnine` and `plotly`, and all the way **between Python 3.10 and 3.15**.
 
 > [!NOTE]
 > Colorblindness affects up to 1 in 12 males (8%) and 1 in 200 females (0.5%)[^1]
